@@ -42,7 +42,7 @@ class Kernel extends HttpKernel
             // Koel doesn't use any default Laravel middleware for web.
         ],
         'api' => [
-            'throttle:60,1',
+            //'throttle:60,1', #60 rate limit per minute
             'bindings',
         ],
     ];

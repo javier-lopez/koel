@@ -11,11 +11,11 @@
     <table class="song-list-header" :class="sortable ? 'sortable' : 'unsortable'">
       <thead>
         <tr>
-          <th @click="sort('song.track')" class="track-number">
-            #
-            <i class="fa fa-angle-down" v-show="sortKey === 'song.track' && order > 0"></i>
-            <i class="fa fa-angle-up" v-show="sortKey === 'song.track' && order < 0"></i>
-          </th>
+          <!--<th @click="sort('song.track')" class="track-number">-->
+            <!--#-->
+            <!--<i class="fa fa-angle-down" v-show="sortKey === 'song.track' && order > 0"></i>-->
+            <!--<i class="fa fa-angle-up" v-show="sortKey === 'song.track' && order < 0"></i>-->
+          <!--</th>-->
           <th @click="sort('song.title')" class="title">
             Title
             <i class="fa fa-angle-down" v-show="sortKey === 'song.title' && order > 0"></i>

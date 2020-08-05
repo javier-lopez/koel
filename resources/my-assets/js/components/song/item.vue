@@ -12,7 +12,7 @@
     @contextmenu.prevent="contextMenu"
     :class="{ playing, selected: item.selected }"
   >
-    <td class="track-number">{{ song.track || '' }}</td>
+    <!--<td class="track-number">{{ song.track || '' }}</td>-->
     <td class="title">{{ song.title }}</td>
     <td class="artist">{{ song.artist.name }}</td>
     <td class="album">{{ song.album.name }}</td>

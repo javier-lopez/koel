@@ -36,6 +36,8 @@ interface Plyr {
   restart(): void
   play(): void
   pause(): void
+  rewind(seconds: number): void
+  forward(seconds: number): void
   seek(position: number): void
   setVolume(volume: number): void
 }

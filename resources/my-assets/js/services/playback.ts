@@ -311,6 +311,14 @@ export const playback = {
     }
   },
 
+  playRewind(seconds: number): void {
+    this.getPlayer().rewind(seconds)
+  },
+
+  playForward(seconds: number): void {
+    this.getPlayer().forward(seconds)
+  },
+
   /**
    * @param {Number}     volume   0-10
    * @param {Boolean=true}   persist  Whether the volume should be saved into local storage

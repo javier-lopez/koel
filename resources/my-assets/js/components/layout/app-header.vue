@@ -1,6 +1,6 @@
 <template>
   <header id="mainHeader" @dblclick="triggerMaximize" data-cy="appHeader">
-    <h1 class="brand" v-once>{{ appName }}</h1>
+    <h1 class="brand" v-once>Espotifai</h1>
     <span class="hamburger" @click="toggleSidebar" role="button" title="Show or hide the sidebar">
       <i class="fa fa-bars"></i>
     </span>
@@ -10,15 +10,6 @@
     <search-form/>
     <div class="header-right">
       <user-badge/>
-      <a
-        @click.prevent="showAboutDialog"
-        class="about control"
-        href
-        title="About Koel"
-        role="button"
-      >
-        <i class="fa fa-info-circle"/>
-      </a>
     </div>
   </header>
 

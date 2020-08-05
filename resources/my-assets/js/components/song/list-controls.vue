@@ -25,6 +25,16 @@
         </template>
         <template v-else>
           <btn
+            @click.prevent="playAll"
+            class="btn-play-all"
+            green
+            title="Play all songs"
+            v-if="selectedSongs.length < 2 && songs.length"
+          >
+            <i class="fa fa-play"></i> All
+          </btn>
+
+          <btn
             @click.prevent="shuffle"
             class="btn-shuffle-all"
             orange

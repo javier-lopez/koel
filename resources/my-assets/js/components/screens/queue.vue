@@ -25,10 +25,8 @@
     <song-list v-show="state.songs.length" :items="state.songs" type="queue" ref="songList"/>
 
     <div v-show="!state.songs.length" class="none">
-      <p>Empty spaces. Abandoned places.</p>
-
-      <p v-if="shouldShowShufflingAllLink">How about
-        <a class="start" @click.prevent="shuffleAll">shuffling all songs</a>?
+      <p>
+        <a class="start" @click.prevent="shuffleAll">Let the party begin!!!</a>
       </p>
     </div>
   </section>

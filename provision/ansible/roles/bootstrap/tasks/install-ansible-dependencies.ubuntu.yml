@@ -4,7 +4,7 @@
     warn: false
 
 - name: install ansible dependencies
-  raw: test -f {{item.cmd}} ||  apt-get install --no-install-recommends -y {{item.pkg}}
+  raw: test -f {{item.cmd}} || DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y {{item.pkg}}
   args:
     warn: false
   register: ansible_dependencies
@@ -14,3 +14,5 @@
     - { cmd: '/usr/bin/pip',            pkg: 'python-pip'     }
     - { cmd: '/usr/bin/sudo',           pkg: 'sudo'           }
     - { cmd: '/usr/bin/python-selinux', pkg: 'python-selinux' }
+    - { cmd: '/usr/bin/gpg',            pkg: 'gpg'            }
+    - { cmd: '/usr/bin/gpg-agent',      pkg: 'gpg-agent'      }

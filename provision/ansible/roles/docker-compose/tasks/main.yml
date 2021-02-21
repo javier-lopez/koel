@@ -5,3 +5,11 @@
 - name: install docker compose
   include_tasks: install-docker-compose.yml
   when: not docker_compose_installed.stat.exists
+
+- name: docker-compose -v
+  raw: export TMPDIR=$HOME; docker-compose -v
+  args:
+    warn: false
+  register: raw_output
+
+- debug: var=raw_output.stdout_lines

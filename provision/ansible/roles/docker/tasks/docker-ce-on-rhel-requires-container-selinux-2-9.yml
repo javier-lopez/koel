@@ -1,13 +1,7 @@
-- name: detect santander owned machine
-  stat:
-    path: /santander-owned-machine
-  register: santander_owned_machine
-
 - name: enable rhel-7-server-extras-rpms channel
   command: subscription-manager repos --enable=rhel-7-server-extras-rpms
   become: yes
   become_method: sudo
-  when: santander_owned_machine.stat.exists == False
 
 - name: retry install docker-{{docker_edition}} {{docker_version}}
   yum: name=docker-{{docker_edition}}-{{docker_version}}.ce state=present
@@ -19,4 +13,3 @@
   command: subscription-manager repos --disable=rhel-7-server-extras-rpms
   become: yes
   become_method: sudo
-  when: santander_owned_machine.stat.exists == False

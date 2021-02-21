@@ -71,7 +71,7 @@
   copy: src=logrotate.cron dest=/etc/cron.hourly/logrotate mode=0700
 
 - name: uninstall firewalld
-  include_tasks: install-base-packages.{{distro}}.yml
+  include_tasks: uninstall-firewalld.{{distro}}.yml
 
 - name: disable selinux
   include_tasks: disable-selinux.{{distro}}.yml

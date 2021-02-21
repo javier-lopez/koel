@@ -1,0 +1,43 @@
+- name: create a directory to restore backups
+  file: path={{item}} state=directory
+  with_items:
+    - /restore
+
+- name: upload backup directory
+  synchronize: src={{item}} dest="/restore"  \
+               delete=yes recursive=yes copy_links=yes
+  with_items:
+    - backups
+
+- name: install zip
+  apt: name={{item}} state=present install_recommends=no update_cache=yes cache_valid_time=86400
+  with_items:
+    - zip
+
+- name: read app's domain
+  shell: |
+    if [ -f /tmp/.env.{{env}} ]; then
+      cp /tmp/.env.{{env}} /tmp/app.env
+    else
+      cp /tmp/.env /tmp/app.env
+    fi
+
+    grep "APP_DOMAIN=" /tmp/app.env > /tmp/app_name
+    . /tmp/app_name
+    echo "${APP_DOMAIN}"
+  changed_when: false # this will never report 'changed' status
+  register: app_name
+
+- name: set app_name fact
+  set_fact: app_name={{app_name.stdout}}
+  check_mode: no
+
+- debug: var=app_name
+
+- name: restore selected backup
+  raw: "{{docker_containers_volume_path}}/{{app_name}}/extra/db-restore.sh {{app_db_restore_backup}}"
+  args:
+    warn: false
+  register: raw_output
+
+- debug: var=raw_output.stdout_lines

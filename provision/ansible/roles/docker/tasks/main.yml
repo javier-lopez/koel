@@ -26,6 +26,15 @@
 - name: ensure /etc/docker directory is owned by docker:docker user/group
   file: path=/etc/docker state=directory mode=0755 owner=docker group=docker
 
+- name: use docker without sudo
+  shell: |
+    USERS="$(busybox cat /etc/passwd | busybox awk -F: '{if ($3 >= 1000 && $3 < 60000) print $1}')"
+
+    for user in ${USERS}; do
+        usermod -aG docker "${user}" || :
+    done
+    newgrp docker || :
+
 - name: setup docker '{{docker_storage_driver}}' storage driver
   include_tasks: docker-storage-driver-{{docker_storage_driver}}.yml
 
@@ -38,7 +47,7 @@
     - docker-common.j2
     - docker-storage-{{docker_storage_driver}}.j2
     - docker-network.j2
-    - docker-registry.j2
+    #- docker-registry.j2
   notify:
     - restart docker
 
@@ -77,9 +86,6 @@
   copy: src={{item}} dest=/etc/docker/certs.d/{{item | basename}}/ca.crt owner=docker group=docker
   with_fileglob:
     - certs/*
-
-#- name: install docker API client, {{docker_py_version}}
-  #include_tasks: install-docker-api-client.{{distro}}.yml
 
 - name: remove ipv6 options
   sysctl:

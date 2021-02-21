@@ -1,40 +1,31 @@
 ###########
-#   meta  #
+#   Meta  #
 ###########
-skip_bootstrap:       false
-skip_common:          false
-skip_docker:          false
-skip_dockerized_app:  false
-skip_post_deployment: false
+skip_bootstrap:        false
+skip_common:           false
+skip_docker:           false
+skip_docker_multisite: false
+skip_dockerized_app:   false
+skip_post_deployment:  false
 
 ###########
-# general #
+# General #
 ###########
 env: prod
-app_name: espotifai
-domain: "{{app_name}}.com"
 persistent_storage_path: /persistent_storage
 logs_path: "{{persistent_storage_path}}/logs"
 
 system_users:
   - username: ansible
-    password: '{{vault_ansible_password}}'
+    password: '{{vault_ansible_password}}' #openssl passwd -salt salt -1 'same'
     groups: ['wheel']
     shell: /bin/bash
-
-#proxy_host: proxy.{{domain}}
-#proxy_port: 8080
-#http_proxy: http://{{vault_proxy_user}}:{{vault_proxy_password}}@{{proxy_host}}:{{proxy_port}}
-#no_proxy: localhost,*{{domain}}
 
 ##########
 # Docker #
 ##########
 docker_edition: 'ce' #Community Edition or 'ee' for Enterprise Edition
-docker_repo_url: 'https://download.docker.com/linux/centos/docker-{{docker_edition}}.repo'
-docker_gpg_key_url: 'https://download.docker.com/linux/centos/gpg'
-docker_version: 17.09.0
-docker_py_version: 2.5.1
+docker_version: 19.03.13
 
 docker_daemon_tcp_port: 2375
 docker_daemon_memory_maxpct: 90
@@ -42,8 +33,6 @@ docker_daemon_CPU_maxpct: 90
 docker_restart_policy_retry: 5
 docker_containers_log_path: "{{logs_path}}/docker/containers"
 docker_containers_volume_path: "{{persistent_storage_path}}/volumes/docker/containers"
-docker_registries:
-  - "registry.{{domain}}"
 
 docker_admin_users:
   - "{{ansible_user}}"
@@ -63,12 +52,19 @@ docker_volume_group: vg_docker #required
 ##################
 # Docker compose #
 ##################
-docker_compose_version: 1.22.0
-docker_compose_path: /etc/docker/compose
+docker_compose_version: 1.27.4
+
+####################
+# Docker multisite #
+####################
+acme_email: no-reply@espotifai.com
 
 ##########################
 # Dockerized: app        #
 ##########################
+app_compose: docker-compose-ngnix-phpfpm.multisite.ssl.yml
+#app_compose: docker-compose-ngnix-phpfpm-ssl.yml
 #app_compose: docker-compose-apache2.yml
 #app_compose: docker-compose-ngnix-phpfpm.yml
-app_compose: docker-compose-ngnix-phpfpm-ssl.yml
+
+app_db_max_backups: 7

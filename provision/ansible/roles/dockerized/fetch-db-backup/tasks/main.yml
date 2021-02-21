@@ -6,11 +6,40 @@
   include_tasks: install-rsync.{{distro}}.yml
   when: not rsync_installed.stat.exists
 
+- name: read app's domain
+  shell: |
+    if [ -f /tmp/.env.{{env}} ]; then
+      cp /tmp/.env.{{env}} /tmp/app.env
+    else
+      cp /tmp/.env /tmp/app.env
+    fi
+
+    grep "APP_DOMAIN=" /tmp/app.env > /tmp/app_name
+    . /tmp/app_name
+    echo "${APP_DOMAIN}"
+  changed_when: false # this will never report 'changed' status
+  register: app_name
+
+- name: set app_name fact
+  set_fact: app_name={{app_name.stdout}}
+  check_mode: no
+
+- debug: var=app_name
+
+- name: dump current db state
+  raw: "{{docker_containers_volume_path}}/{{app_name}}/extra/db-backup.sh {{app_db_max_backups}}"
+  args:
+    warn: false
+  register: raw_output
+
+- debug: var=raw_output.stdout_lines
+
 - name: download backup directories
-  synchronize: src={{item}} dest="/tmp/{{domain}}/" \
+  synchronize: src={{item}} dest="/tmp/{{app_name}}/" \
                delete=yes recursive=yes copy_links=yes mode=pull
   with_items:
     - /backups
 
 - debug:
-    msg: "Dump was saved to /tmp/{{domain}}/backups*"
+    msg: "Dump was saved to /tmp/{{app_name}}/backups*"
+

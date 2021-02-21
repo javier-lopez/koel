@@ -7,6 +7,9 @@
 - import_playbook: plays/docker.yml
   when: not skip_docker
 
+- import_playbook: plays/docker-multisite.yml
+  when: not skip_docker_multisite
+
 - import_playbook: plays/dockerized/app.yml
   when: not skip_dockerized_app
 

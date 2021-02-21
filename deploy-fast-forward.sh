@@ -12,14 +12,13 @@ if [ ! -f "${CURRENT_DIR}/.vault_pass.txt" ]; then
 fi
 
 cd "${CURRENT_DIR}"
-
 rsync -av resources/my-assets/ resources/assets/
 cd provision/ansible/
 
 #https://mitogen.readthedocs.io/en/latest/ansible.html
-if [ ! -d "mitogen-0.2.2/ansible_mitogen/plugins/strategy" ]; then
-    wget https://files.pythonhosted.org/packages/source/m/mitogen/mitogen-0.2.2.tar.gz
-    tar zxf mitogen-0.2.2.tar.gz
+if [ ! -d "mitogen-0.2.9/ansible_mitogen/plugins/strategy" ]; then
+    wget https://files.pythonhosted.org/packages/source/m/mitogen/mitogen-0.2.9.tar.gz
+    tar zxf mitogen-0.2.9.tar.gz
 fi
 
 set -x
